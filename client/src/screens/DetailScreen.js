@@ -1,13 +1,13 @@
 import { Button, Text, View } from "react-native";
 
-export default function HomeScreen({ navigation }) {
+export default function DetailScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screensss</Text>
+      <Text>Detail Screen</Text>
       <Button
-        title="See detail.."
+        title="Go Back"
         onPress={() => {
-          navigation.navigate("Detail");
+          navigation.navigate("Home");
         }}
       />
     </View>
