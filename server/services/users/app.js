@@ -1,7 +1,7 @@
 const express = require("express");
 const { mongoConnect } = require("./db/config");
 const app = express();
-const port = 4000;
+const port = 4001;
 require("dotenv").config();
 const userRoutes = require("./routes");
 

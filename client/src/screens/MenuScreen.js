@@ -4,28 +4,15 @@ import MenuCard from "../components/MenuCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../stores/reducers/actions";
 
-export default function HomeScreen({ navigation }) {
-  const dispatch = useDispatch();
-  const { categories } = useSelector((state) => state.data);
-  useEffect(() => {
-    dispatch(fetchCategories());
-  });
+export default function MenuScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>BcDonald's Menu</Text>
-      </View>
-      <View style={styles.categoryContainer}>
-        {categories.map((el) => {
-          return <MenuCard category={el} key={el.id} />;
-        })}
-        <Button
-          title="Go Back"
-          onPress={() => {
-            navigation.navigate("Menu");
-          }}
-        />
-      </View>
+      <Button
+        title="Go Back"
+        onPress={() => {
+          navigation.navigate("Home");
+        }}
+      />
     </View>
   );
 }
