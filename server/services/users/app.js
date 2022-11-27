@@ -5,6 +5,9 @@ const port = 4001;
 require("dotenv").config();
 const userRoutes = require("./routes");
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.send("masuk");
 });

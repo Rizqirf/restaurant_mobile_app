@@ -1,5 +1,4 @@
 const { comparePass } = require("../helpers/bcrypt");
-const { createToken } = require("../helpers/jwt");
 const User = require("../models/users");
 
 class UserController {
@@ -15,7 +14,11 @@ class UserController {
     try {
       const { id } = req.params;
       const users = await User.delete(id);
-      res.status(200).json(users);
+      if (users.deletedCount) {
+        res.status(200).json({ message: "Success delete user" });
+      } else {
+        throw { message: "User not found" };
+      }
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +32,8 @@ class UserController {
         phoneNumber,
         address,
       });
-      res.status(201).json({ id: user.id, email: user.email });
+      console.log(user);
+      res.status(201).json({ message: "Success create new user" });
     } catch (error) {
       console.log(error);
     }
@@ -57,17 +61,13 @@ class UserController {
       if (!compared) {
         throw { name: "invalid_credentials" };
       }
-      const access_token = createToken({
-        id: user.id,
-        role: user.role,
-      });
 
       res.status(200).json({
-        access_token,
+        id: user.id,
         email: user.email,
       });
     } catch (error) {
-      next(error);
+      console.log(error);
     }
   }
 }

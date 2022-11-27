@@ -36,14 +36,14 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     resizeMode: "center",
     // marginHorizontal: 40,
     marginLeft: 40,
   },
   titleContainer: {
-    height: 70,
+    height: 60,
     width: "50%",
     justifyContent: "center",
     marginLeft: 20,

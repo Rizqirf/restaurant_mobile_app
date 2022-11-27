@@ -10,6 +10,7 @@ export default function StackNavigator() {
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Menu" component={MenuScreen} />
+      <Stack.Screen name="Test" component={DetailScreen} />
     </Stack.Navigator>
   );
 }
