@@ -15,15 +15,15 @@ import { getCategories } from "../stores/apollo/queries";
 export default function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(getCategories);
 
-  useEffect(() => {
-    setTimeout(() => {
-      return (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="#FFBC0D" />
-        </View>
-      );
-    }, 5000);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     return (
+  //       <View style={styles.loading}>
+  //         <ActivityIndicator size="large" color="#FFBC0D" />
+  //       </View>
+  //     );
+  //   }, 5000);
+  // }, []);
 
   const renderItem = ({ item }) => {
     return (

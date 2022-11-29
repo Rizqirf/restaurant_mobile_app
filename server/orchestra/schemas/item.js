@@ -17,7 +17,7 @@ const typeDefs = `#graphql
 	description: String
 	price: Int
 	imgUrl: String
-	authorId: Int
+	authorId: String
 	categoryId: Int
 	Category: Category
 	Ingredients: [Ingredient]
