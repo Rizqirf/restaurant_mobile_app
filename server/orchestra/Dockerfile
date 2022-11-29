@@ -1,8 +1,9 @@
 FROM node:16.16
-WORKDIR /usr/local/app
-ENV PORT=4000
-COPY package.json package-lock.json /usr/local/app/
+WORKDIR /server/orchestra
+COPY package*.json ./
 RUN npm install && npm cache clean –force
+ENV PORT=4000
+ENV NODE_ENV=production
 RUN npm install -g nodemon
 COPY ./ ./
-CMD ['npm','run','start']
+CMD ["node","app.js"]
