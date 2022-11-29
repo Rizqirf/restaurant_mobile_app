@@ -40,8 +40,10 @@ class UserController {
   }
   static async update(req, res, next) {
     try {
-      const { phoneNumber, address } = req.body;
+      const { email, password, phoneNumber, address } = req.body;
       const users = await User.update({
+        email,
+        password,
         phoneNumber,
         address,
       });
@@ -63,7 +65,6 @@ class UserController {
       }
 
       res.status(200).json({
-        id: user.id,
         email: user.email,
       });
     } catch (error) {

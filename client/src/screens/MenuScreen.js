@@ -9,27 +9,30 @@ import {
   Image,
   StyleSheet,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Dimensions } from "react-native";
-import { fetchItems } from "../stores/reducers/actions";
+
+import convertRupiah from "rupiah-format";
+import { useQuery } from "@apollo/client";
+import { getItems } from "../stores/apollo/queries";
 
 const windowWidth = Dimensions.get("window").width;
 
-export default function MenuScreen({ navigation }) {
-  const { items } = useSelector((state) => state.data);
-  const dispatch = useDispatch();
+export default function MenuScreen({ navigation, route }) {
+  const { categoryId } = route.params;
 
-  useEffect(() => {
-    dispatch(fetchItems());
-  }, []);
+  const { loading, error, data } = useQuery(getItems, {
+    variables: {
+      categoryId,
+    },
+  });
 
   const renderItem = ({ item }) => {
     return (
-      <Pressable
+      <TouchableOpacity
         onPress={() => {
-          navigation.navigate("Test");
+          navigation.navigate("Detail", { id: item.id });
         }}
       >
         <View style={styles.cardContainer}>
@@ -41,27 +44,35 @@ export default function MenuScreen({ navigation }) {
           />
           <View style={styles.contentContainer}>
             <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.price}>{item.price}</Text>
+            <Text style={styles.price}>
+              {convertRupiah.convert(item.price)}
+            </Text>
           </View>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     );
   };
+
+  if (loading)
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#FFBC0D" />
+      </View>
+    );
 
   return (
     <View style={styles.container}>
       <FlatList
         horizontal={false}
         numColumns={2}
-        data={items}
+        data={data.getItems}
         renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
       />
     </View>
   );
 }
-// <SafeAreaView>
-// </SafeAreaView>
 
 const styles = StyleSheet.create({
   container: {
@@ -71,63 +82,35 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
+    borderRadius: 15,
+    margin: 10,
   },
   cardContainer: {
-    backgroundColor: "white",
-    borderRadius: 15,
-    marginLeft: 20,
-    marginVertical: 10,
-    width: windowWidth / 2 - 30,
-  },
-  imageContainer: {
-    width: "min-content",
+    marginLeft: 10,
+    marginTop: 10,
+    width: (windowWidth - 10) / 2 - 15,
   },
   cardImage: {
     resizeMode: "center",
     height: 140,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
   },
   contentContainer: {
-    marginTop: -20,
-    padding: 14,
+    paddingLeft: 10,
   },
   name: {
     fontSize: 16,
     marginBottom: 1,
     fontWeight: "700",
-    color: "#18181b",
+    color: "#292929",
   },
   price: {
     fontSize: 14,
     fontWeight: "500",
-    lineHeight: 17 / 0.7,
-    color: "#a1a1aa",
+    color: "#5a5a5a",
     textAlign: "justify",
-    // marginBottom: 10
   },
-  tagContainer: {
-    flexDirection: "row",
-  },
-  tag: {
-    backgroundColor: "#d6a1a1",
-    color: "#fff",
-    borderRadius: 10,
-    overflow: "hidden",
-    marginRight: 8,
-    padding: 10,
-    fontWeight: "600",
+  loading: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
-
-// <Text>Home Screens</Text>
-// 		<TouchableOpacity
-// 			className="hover:bg-darkpink bg-pinkpastel rounded-full border border-pinkpastel text-white px-8 py-2 text-sm"
-// 			onPress={() => {
-// 				navigation.navigate("Detail")
-// 			}}
-// 		>
-// 		 	<Text className="text-lg text-white font-bold">
-// 				Press Here
-// 			</Text>
-// 		</TouchableOpacity>

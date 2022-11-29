@@ -107,8 +107,90 @@
     { "id": 1, "name": "Breakfast" },
     { "id": 2, "name": "Burgers" },
     { "id": 3, "name": "Chicken" },
-    { "id": 4, "name": "McNuggies" },
-    { "id": 5, "name": "McCoffee" },
+    { "id": 4, "name": "BcNuggies" },
+    { "id": 5, "name": "BcCoffee" },
     { "id": 6, "name": "Beverages" }
+  ],
+  "ItemIngredients": [
+    {
+      "ItemId": 5,
+      "IngredientId": 1
+    },
+    {
+      "ItemId": 6,
+      "IngredientId": 2
+    },
+    {
+      "ItemId": 1,
+      "IngredientId": 3
+    },
+    {
+      "ItemId": 1,
+      "IngredientId": 4
+    },
+    {
+      "ItemId": 5,
+      "IngredientId": 5
+    },
+    {
+      "ItemId": 5,
+      "IngredientId": 6
+    },
+    {
+      "ItemId": 7,
+      "IngredientId": 7
+    },
+    {
+      "ItemId": 2,
+      "IngredientId": 1
+    },
+    {
+      "ItemId": 8,
+      "IngredientId": 2
+    },
+    {
+      "ItemId": 1,
+      "IngredientId": 3
+    },
+    {
+      "ItemId": 9,
+      "IngredientId": 4
+    },
+    {
+      "ItemId": 4,
+      "IngredientId": 5
+    },
+    {
+      "ItemId": 7,
+      "IngredientId": 6
+    },
+    {
+      "ItemId": 3,
+      "IngredientId": 7
+    },
+    {
+      "ItemId": 7,
+      "IngredientId": 1
+    },
+    {
+      "ItemId": 5,
+      "IngredientId": 2
+    },
+    {
+      "ItemId": 2,
+      "IngredientId": 3
+    },
+    {
+      "ItemId": 4,
+      "IngredientId": 4
+    },
+    {
+      "ItemId": 9,
+      "IngredientId": 5
+    },
+    {
+      "ItemId": 6,
+      "IngredientId": 6
+    }
   ]
 }

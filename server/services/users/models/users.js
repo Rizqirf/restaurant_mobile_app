@@ -52,6 +52,10 @@ class User {
   static async update(obj) {
     try {
       const collection = await this.getCollection();
+      obj = {
+        ...obj,
+        password: passwordHash(obj.password),
+      };
       const users = await collection.update({ email: obj.email }, obj);
 
       return users;

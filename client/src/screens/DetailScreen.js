@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client";
 import {
   StatusBar,
   Button,
@@ -8,104 +9,66 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Dimensions } from "react-native";
-import { fetchItemDetail } from "../stores/reducers/actions";
-
-const windowWidth = Dimensions.get("window").width;
+import convertRupiah from "rupiah-format";
+import { getItemDetail } from "../stores/apollo/queries";
 
 export default function DetailScreen({ navigation, route }) {
-  // const { id } = route.params;
+  const { id } = route.params;
 
-  const detail = {
-    id: "1",
-    name: "Egg and Cheese Muffin",
-    description:
-      "In sollicitudin tortor sit amet massa facilisis porttitor. Vivamus vulputate, odio sit amet facilisis placerat, est dolor luctus erat, a ornare enim elit sed felis. Maecenas dui ex, varius vel euismod a, volutpat eu quam. Nulla ullamcorper elementum mauris non vehicula. Sed accumsan sollicitudin ligula a vulputate. Maecenas sodales enim sodales turpis consequat, ut ultrices tortor lacinia. Sed nunc lorem, interdum in felis vitae, volutpat feugiat tellus.",
-    price: 36000,
-    imgUrl:
-      "https://nos.jkt-1.neo.id/mcdonalds/foods/October2019/9FcgMqqWSFYjE6edaOAL.png",
-    MongoId: null,
-    categoryId: 1,
-    Category: {
-      id: "1",
-      name: "Breakfast",
-    },
-    Ingredients: [
-      {
-        name: "Big Mac Bun",
-        ItemIngredient: {
-          id: null,
-          ItemId: "1",
-          IngredientId: 1,
-          createdAt: "2022-11-20T10:21:04.812Z",
-          updatedAt: "2022-11-20T10:21:04.812Z",
-        },
-      },
-      {
-        name: "100% Beef Patty",
-        ItemIngredient: {
-          id: null,
-          ItemId: "1",
-          IngredientId: 2,
-          createdAt: "2022-11-20T10:21:04.812Z",
-          updatedAt: "2022-11-20T10:21:04.812Z",
-        },
-      },
-      {
-        name: "Pasteurized Process American Cheese",
-        ItemIngredient: {
-          id: null,
-          ItemId: "1",
-          IngredientId: 5,
-          createdAt: "2022-11-20T10:21:04.812Z",
-          updatedAt: "2022-11-20T10:21:04.812Z",
-        },
-      },
-    ],
-  };
+  const { loading, error, data } = useQuery(getItemDetail, {
+    variables: { id },
+  });
 
-  const [itemDetail, setItemDetail] = useState(detail);
-
-  useEffect(() => console.log(itemDetail), []);
+  if (loading)
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#FFBC0D" />
+      </View>
+    );
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.cardImage}
-        source={{
-          uri: itemDetail.imgUrl,
-        }}
-      />
-      <View style={styles.contentContainer}>
-        <Text style={styles.name}>{itemDetail.name}</Text>
-        <Text>{itemDetail.Category.name}</Text>
-        <Text style={styles.description}>{itemDetail.description}</Text>
-        <Text>Ingredients :</Text>
-        {itemDetail.Ingredients.map((el, i) => {
-          return (
-            <Text key={i} style={styles.description}>
-              &#x2022; {el.name}
-            </Text>
-          );
-        })}
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.name}>{data.getItem.name}</Text>
+        <Text style={styles.category}>{data.getItem.Category.name}</Text>
+        <Image
+          style={styles.cardImage}
+          source={{
+            uri: data.getItem.imgUrl,
+          }}
+        />
+        <View style={styles.contentContainer}>
+          <Text style={styles.description}>
+            {"\t"}
+            {"\t"}
+            {data.getItem.description}
+          </Text>
+          <Text style={styles.ingredients}>Ingredients :</Text>
+          {data.getItem.Ingredients.map((el, i) => {
+            return (
+              <Text key={i} style={styles.ingredientItem}>
+                &#x2022; {el.name}
+              </Text>
+            );
+          })}
+          <Text style={styles.price}>
+            {convertRupiah.convert(data.getItem.price)}
+          </Text>
 
-        <Text style={styles.description}>{itemDetail.price}</Text>
-        <View style={styles.tagContainer}>
-          <Text style={styles.tag}>#{itemDetail.Category.name}</Text>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.buttonPink}>
-            <Text style={styles.buttonTextPink}>Buy now</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonGrey}>
-            <Text style={styles.buttonTextGrey}>Add to cart</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonRed}>
+              <Text style={styles.buttonTextRed}>Buy now</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonYellow}>
+              <Text style={styles.buttonTextYellow}>Add to cart</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -114,6 +77,35 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     margin: 16,
+  },
+  name: {
+    fontSize: 32,
+    marginTop: 10,
+    marginBottom: 2,
+    fontWeight: "700",
+    color: "#292929",
+    alignSelf: "center",
+  },
+  category: {
+    fontSize: 16,
+    marginBottom: 8,
+    fontWeight: "700",
+    color: "#292929",
+    alignSelf: "center",
+  },
+  ingredients: {
+    fontSize: 16,
+    marginBottom: 8,
+    fontWeight: "700",
+    color: "#292929",
+  },
+  ingredientItem: {
+    fontSize: 14,
+    fontWeight: "500",
+    lineHeight: 14 / 0.7,
+    color: "#5a5a5a",
+    textAlign: "justify",
+    marginLeft: 10,
   },
   cardImage: {
     resizeMode: "center",
@@ -126,53 +118,49 @@ const styles = StyleSheet.create({
     marginTop: -30,
     padding: 20,
   },
-  name: {
-    fontSize: 32,
-    marginBottom: 8,
-    fontWeight: "700",
-    color: "#18181b",
-  },
+
   description: {
     fontSize: 14,
     fontWeight: "500",
     lineHeight: 14 / 0.7,
-    color: "#a1a1aa",
+    color: "#5a5a5a",
     textAlign: "justify",
-    marginBottom: 10,
+    marginBottom: 20,
   },
-  tagContainer: {
-    flexDirection: "row",
+  price: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#292929",
+    marginTop: 20,
+    textAlign: "justify",
   },
-  tag: {
-    backgroundColor: "#d6a1a1",
-    color: "#fff",
-    borderRadius: 10,
-    marginRight: 8,
-    padding: 10,
-    fontWeight: "600",
-  },
-  buttonPink: {
+  buttonContainer: { marginTop: 15 },
+  buttonRed: {
     padding: 10,
     alignItems: "center",
-    backgroundColor: "#d6a1a1",
+    backgroundColor: "#d90007",
     borderRadius: 20,
     marginVertical: 5,
     marginHorizontal: 10,
   },
-  buttonTextPink: {
+  buttonTextRed: {
     color: "#fff",
     fontWeight: "700",
   },
-  buttonGrey: {
+  buttonYellow: {
     padding: 10,
     alignItems: "center",
-    backgroundColor: "#e7e5e4",
+    backgroundColor: "#FFBC0D",
     borderRadius: 20,
     marginVertical: 5,
     marginHorizontal: 10,
   },
-  buttonTextGrey: {
-    color: "#18181b",
+  buttonTextYellow: {
+    color: "#292929",
     fontWeight: "700",
+  },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
