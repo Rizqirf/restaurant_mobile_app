@@ -1,5 +1,5 @@
 const axios = require("axios");
-const baseUrl = "http://localhost:4001";
+const baseUrl = "http://54.255.227.74:4001";
 
 const typeDefs = `#graphql
   type User {

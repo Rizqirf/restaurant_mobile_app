@@ -1,5 +1,5 @@
 const axios = require("axios");
-const baseUrl = "http://localhost:4002";
+const baseUrl = "http://54.255.227.74:4002";
 
 const Redis = require("ioredis");
 const redis = new Redis({
@@ -98,7 +98,7 @@ const resolvers = {
         const { id } = args;
         const { data: item } = await axios.get(`${baseUrl}/items/${id}`);
         const { data: user } = await axios.get(
-          `http://localhost:4001/users/${item.authorId}`
+          `http://54.255.227.74:4001/users/${item.authorId}`
         );
         const data = { ...item, author: user.email };
         return data;
