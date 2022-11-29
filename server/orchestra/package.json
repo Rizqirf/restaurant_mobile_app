@@ -1,0 +1,19 @@
+{
+  "name": "orchestra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.2.1",
+    "axios": "^1.2.0",
+    "graphql": "^16.6.0",
+    "ioredis": "^5.2.4",
+    "redis": "^4.5.1"
+  }
+}

@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.get("/", UserController.read);
 router.post("/", UserController.create);
+router.post("/login", UserController.login);
 router.delete("/:id", UserController.delete);
 
 module.exports = router;

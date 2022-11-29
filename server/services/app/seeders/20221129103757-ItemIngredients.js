@@ -1,7 +1,5 @@
 "use strict";
 
-const { passwordHash } = require("../helpers/bcrypt");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -14,19 +12,13 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
+    const data = require("../restaurant.json");
+    data.ItemIngredients.forEach((el) => {
+      el.createdAt = el.updatedAt = new Date();
+    });
     await queryInterface.bulkInsert(
-      "Users",
-      [
-        {
-          email: "admin@admin.com",
-          password: passwordHash("12345"),
-          role: "admin",
-          phoneNumber: "080808080808",
-          address: "sdfghjklkjhgfdsdf",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
+      "ItemIngredients",
+      data.ItemIngredients,
       {}
     );
   },
@@ -38,6 +30,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete("Users", null, {});
+    await queryInterface.bulkDelete("ItemIngredients", null, {});
   },
 };

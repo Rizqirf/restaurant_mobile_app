@@ -1,8 +1,6 @@
-const { ObjectID } = require("bson");
 const { getDb } = require("../db/config");
 const { passwordHash } = require("../helpers/bcrypt");
-
-const salt = bcrypt.genSaltSync("10");
+const ObjectId = require("mongodb").ObjectId;
 
 class User {
   static async getCollection() {
@@ -29,9 +27,7 @@ class User {
   static async delete(id) {
     try {
       const collection = await this.getCollection();
-      const users = await collection.deleteOne({
-        _id: ObjectID(id),
-      });
+      const users = await collection.deleteOne({ _id: ObjectId(id) });
 
       return users;
     } catch (error) {
@@ -56,6 +52,10 @@ class User {
   static async update(obj) {
     try {
       const collection = await this.getCollection();
+      obj = {
+        ...obj,
+        password: passwordHash(obj.password),
+      };
       const users = await collection.update({ email: obj.email }, obj);
 
       return users;
