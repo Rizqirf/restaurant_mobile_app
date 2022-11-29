@@ -28,6 +28,7 @@ export const getItemDetail = gql`
       description
       price
       imgUrl
+      author
       Category {
         name
       }

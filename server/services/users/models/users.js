@@ -73,6 +73,16 @@ class User {
       console.log(error);
     }
   }
+  static async findByPk(id) {
+    try {
+      const collection = await this.getCollection();
+      const user = await collection.findOne({ _id: ObjectId(id) });
+
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = User;
