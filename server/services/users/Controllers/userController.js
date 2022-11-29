@@ -71,6 +71,16 @@ class UserController {
       console.log(error);
     }
   }
+  static async findOne(req, res, next) {
+    try {
+      let { id } = req.params;
+      const user = await User.findByPk({ id });
+
+      res.status(200).json(user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = UserController;

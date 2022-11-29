@@ -46,6 +46,9 @@ export default function DetailScreen({ navigation, route }) {
             {"\t"}
             {data.getItem.description}
           </Text>
+          <Text style={styles.description}>
+            Created by: {data.getItem.author}
+          </Text>
           <Text style={styles.ingredients}>Ingredients :</Text>
           {data.getItem.Ingredients.map((el, i) => {
             return (

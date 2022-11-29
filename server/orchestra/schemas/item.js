@@ -6,7 +6,7 @@ const redis = new Redis({
   port: 18994,
   host: "redis-18994.c295.ap-southeast-1-1.ec2.cloud.redislabs.com",
   username: "default",
-  password: "PqYDPRDANrXOA2FuTgzLXs2DStDcthjj",
+  password: process.env.REDIS_PASS,
   db: 0,
 });
 
@@ -21,6 +21,7 @@ const typeDefs = `#graphql
 	categoryId: Int
 	Category: Category
 	Ingredients: [Ingredient]
+  author: String
   }
 
   type Category {
@@ -95,7 +96,11 @@ const resolvers = {
     getItem: async (_, args) => {
       try {
         const { id } = args;
-        const { data } = await axios.get(`${baseUrl}/items/${id}`);
+        const { data: item } = await axios.get(`${baseUrl}/items/${id}`);
+        const { data: user } = await axios.get(
+          `http://localhost:4001/users/${item.authorId}`
+        );
+        const data = { ...item, author: user.email };
         return data;
       } catch (error) {
         console.log(error);
