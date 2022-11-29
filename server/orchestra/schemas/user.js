@@ -26,6 +26,7 @@ const typeDefs = `#graphql
 
   type Query {
     getUsers: [User]
+    getUser(id:ID): User
     login(username: String, password: String): Login
   }
 
@@ -53,6 +54,15 @@ const resolvers = {
           username,
           password,
         });
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    getUser: async (_, args) => {
+      try {
+        const { id } = args;
+        const { data } = await axios.get(`${baseUrl}/users/${id}`);
         return data;
       } catch (error) {
         console.log(error);
